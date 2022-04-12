@@ -6,7 +6,7 @@ LABEL maintainer="admin@minenet.at"
 RUN wget --quiet "https://release.gitkraken.com/linux/gitkraken-amd64.deb" -O /tmp/gitkraken-amd64.deb && \
  	export TZ=Europe/Amsterdam && \
 	apt-get update && \
-	apt-get -y install --no-install-recommends chromium fonts-takao fonts-arphic-uming gconf2 gconf-service libgtk2.0-0 libnotify4 libnss3 gvfs-bin xdg-utils libxss1 libasound2 procps && \
+	apt-get -y install --no-install-recommends fonts-takao fonts-arphic-uming xz-utils libgtk-3-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon-x11-0 libgbm1 libpango-1.0-0 libcairo2 libasound2 && \
 	dpkg -i /tmp/gitkraken-amd64.deb && \
 	apt-get -f install && \
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
@@ -19,9 +19,9 @@ RUN wget --quiet "https://release.gitkraken.com/linux/gitkraken-amd64.deb" -O /t
 	rm /usr/share/novnc/app/images/icons/* && \
 	rm /tmp/gitkraken-amd64.deb
 
-ENV DATA_DIR=/chrome
+ENV DATA_DIR=/gitkraken
 ENV CUSTOM_RES_W=1024
-ENV CUSTOM_RES_H=768
+ENV CUSTOM_RES_H=820
 ENV CUSTOM_DEPTH=16
 ENV NOVNC_PORT=8080
 ENV RFB_PORT=5900
@@ -30,7 +30,7 @@ ENV UMASK=000
 ENV UID=99
 ENV GID=100
 ENV DATA_PERM=770
-ENV USER="chrome"
+ENV USER="gitkraken"
 
 RUN mkdir $DATA_DIR && \
 	useradd -d $DATA_DIR -s /bin/bash $USER && \
