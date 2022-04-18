@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  gitkraken:
+    image: cburggraafeagerly/gitkraken
+    container_name: gitkraken
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - default
+    volumes:
+      - $SSH_AUTH_SOCK:/ssh-auth.sock
+      - ~/docker-eagerly:/repos
+      - ./config/gitkraken:/gitkraken
+    environment:
+      SSH_AUTH_SOCK: "/ssh-auth.sock"
+      CUSTOM_RES_W: "920"
+      CUSTOM_RES_H: '1080'
+      UID: '1000'
+      GID: '1000'
+      UMASK: '000'
+      DATA_PERM: '770'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kraken.rule=Host(`gitkraken.test`)"
+      - "traefik.http.routers.kraken.entrypoints=websecure"
+      - "traefik.http.services.kraken.loadbalancer.server.port=8080"
+      - "traefik.docker.network=traefik_proxy"
+    restart: unless-stopped
