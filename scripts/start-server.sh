@@ -19,25 +19,25 @@ if [ "${CUSTOM_RES_H}" -le 819 ]; then
     CUSTOM_RES_H=820
 fi
 
-rm -rf ${DATA_DIR}/gitkraken-amd64.tar.gz 2>/dev/null
+# rm -rf ${DATA_DIR}/gitkraken-amd64.tar.gz 2>/dev/null
 
-echo "---Checking if GitKraken is installed...---"
-if [ ! -f ${DATA_DIR}/bin/gitkraken ]; then
-  echo "---GitKraken not installed, installing!---"
-  cd ${DATA_DIR}
-  if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/gitkraken-amd64.tar.gz "https://release.gitkraken.com/linux/gitkraken-amd64.tar.gz" ; then
-    echo "---Sucessfully downloaded GitKraken!---"
-  else
-    echo "---Something went wrong, can't download GitKraken, putting container in sleep mode!---"
-    rm -rf ${DATA_DIR}/gitkraken-amd64.tar.gz 2>/dev/null
-    sleep infinity
-  fi
-  mkdir -p ${DATA_DIR}/bin
-  tar -C ${DATA_DIR}/bin --strip-components=1 -xf ${DATA_DIR}/gitkraken-amd64.tar.gz
-  rm -rf ${DATA_DIR}/gitkraken-amd64.tar.gz 2>/dev/null
-else
-  echo "---GitKraken found!---"
-fi
+# echo "---Checking if GitKraken is installed...---"
+# if [ ! -f ${DATA_DIR}/bin/gitkraken ]; then
+#   echo "---GitKraken not installed, installing!---"
+#   cd ${DATA_DIR}
+#   if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/gitkraken-amd64.tar.gz "https://release.gitkraken.com/linux/gitkraken-amd64.tar.gz" ; then
+#     echo "---Sucessfully downloaded GitKraken!---"
+#   else
+#     echo "---Something went wrong, can't download GitKraken, putting container in sleep mode!---"
+#     rm -rf ${DATA_DIR}/gitkraken-amd64.tar.gz 2>/dev/null
+#     sleep infinity
+#   fi
+#   mkdir -p ${DATA_DIR}/bin
+#   tar -C ${DATA_DIR}/bin --strip-components=1 -xf ${DATA_DIR}/gitkraken-amd64.tar.gz
+#   rm -rf ${DATA_DIR}/gitkraken-amd64.tar.gz 2>/dev/null
+# else
+#   echo "---GitKraken found!---"
+# fi
 
 echo "---Checking for old logfiles---"
 find $DATA_DIR -name "XvfbLog.*" -exec rm -f {} \;
@@ -61,8 +61,9 @@ sleep 2
 echo "---Starting noVNC server---"
 websockify -D --web=/usr/share/novnc/ --cert=/etc/ssl/novnc.pem ${NOVNC_PORT} localhost:${RFB_PORT}
 sleep 2
-cp usr/share/novnc/vnc.html usr/share/novnc/index.html
+# cp usr/share/novnc/vnc.html usr/share/novnc/index.html
 
-echo "---Starting GitKraken---"
-cd ${DATA_DIR}
-${DATA_DIR}/bin/gitkraken --user-data-dir=${DATA_DIR}/user --disable-accelerated-video --no-sandbox --disable-gpu 2>/dev/null
+echo "---Starting poedit---"
+# cd ${DATA_DIR}
+poedit
+#poedit --user-data-dir=${DATA_DIR}/user --disable-accelerated-video --no-sandbox --disable-gpu 2>/dev/null

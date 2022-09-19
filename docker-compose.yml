@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  gitkraken:
-    image: cburggraafeagerly/gitkraken
-    container_name: gitkraken
+  poedit:
+    image: cburggraafeagerly/poedit
+    container_name: poedit
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,8 +11,8 @@ services:
       - default
     volumes:
       - $SSH_AUTH_SOCK:/ssh-auth.sock
-      - ~/docker-eagerly:/repos
-      - ./config/gitkraken:/gitkraken
+      - ~/docker-eagerly/sites:/repos
+      - ./config/poedit:/poedit
     environment:
       SSH_AUTH_SOCK: "/ssh-auth.sock"
       CUSTOM_RES_W: "920"
@@ -23,8 +23,13 @@ services:
       DATA_PERM: '770'
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.kraken.rule=Host(`gitkraken.test`)"
-      - "traefik.http.routers.kraken.entrypoints=websecure"
-      - "traefik.http.services.kraken.loadbalancer.server.port=8080"
+      - "traefik.http.routers.poedit.rule=Host(`poedit.test`)"
+      - "traefik.http.routers.poedit.entrypoints=websecure"
+      - "traefik.http.services.poedit.loadbalancer.server.port=8080"
       - "traefik.docker.network=traefik_proxy"
     restart: unless-stopped
+
+networks:
+  default:
+    name: traefik_proxy
+    external: true
