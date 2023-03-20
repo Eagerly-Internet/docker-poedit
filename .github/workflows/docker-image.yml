@@ -1,0 +1,25 @@
+name: Build and Push Docker Image Production
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 1 * *'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      run: |
+        docker build -t docker-poedit .
+        echo "${{ secrets.CONTAINER_REGISTRY_PASSWORD }}" | docker login ghcr.io -u "${{ secrets.CONTAINER_REGISTRY_USERNAME }}" --password-stdin
+
+    - name: Push Docker Image
+      run: |
+        docker tag docker-poedit ghcr.io/eagerly-internet/docker-poedit:latest
+        docker push ghcr.io/eagerly-internet/docker-poedit:latest
